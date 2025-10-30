@@ -37,9 +37,6 @@ export default function LoginForm() {
         <a href="/register" className="text-sm text-blue-600 hover:underline">
           Register Account
         </a>
-        <a href="/forgot-password" className="text-sm text-blue-600 hover:underline">
-          Forgot Password?
-        </a>
       </div>
     </form>
   );
