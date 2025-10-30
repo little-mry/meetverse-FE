@@ -2,15 +2,16 @@
 
 body {
   display: flex;
-  align-items: center;
   justify-content: center;
   background-color: rgb(24, 25, 39);
+  color: white;
 }
 
 .main {
   max-width: 1400px;
   width: 100vw;
- 
+  display: flex;
+  justify-content: center;
 }
 
 /* 
