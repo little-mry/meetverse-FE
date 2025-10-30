@@ -5,7 +5,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center bg-[rgb(24,25,39)] px-10 pt-0">
       {/* Logo */}
       <div className="flex flex-col items-center mb-6">
-        <img src="/logo.png" alt="Meetverse Logo" className="w-45 h-45" />
+        <img src="/logo.png" alt="Meetverse Logo" className="w-[clamp(30rem,32vw,32rem)]" />
       </div>
 
       {/* Card / Form */}
