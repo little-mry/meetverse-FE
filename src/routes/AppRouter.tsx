@@ -4,7 +4,8 @@ import RegisterPage from "../pages/RegisterPage";
 import MeetupsPage from "../pages/MeetupsPage";
 
 export default function AppRouter() {
-  return (
+  return (  
+    <div className="main">
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -12,5 +13,6 @@ export default function AppRouter() {
         <Route path="/meetups" element={<MeetupsPage />} />
       </Routes>
     </BrowserRouter>
+    </div>
   );
 }

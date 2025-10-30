@@ -1,4 +1,17 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(24, 25, 39);
+}
+
+.main {
+  max-width: 1400px;
+  width: 100vw;
+ 
+}
 
 /* 
 
@@ -71,8 +84,7 @@ button:focus-visible {
   }
 }   */
 
-
-body{
+body {
   width: 100vw;
-  height: 100vh;;
+  height: 100vh;
 }

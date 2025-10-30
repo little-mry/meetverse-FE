@@ -1,4 +1,6 @@
-export default function LoginForm() {
+// import { link } from "fs";
+
+export default function LoginForm({ buttonName, linkName }: { buttonName: string, linkName: string } ) {
   return (
     <form className="flex flex-col space-y-4">
       <div className="flex flex-col space-y-1">
@@ -29,13 +31,13 @@ export default function LoginForm() {
         type="submit"
         className="w-full rounded-md bg-black text-white py-2 font-semibold hover:bg-gray-800 transition"
       >
-        Login
+        {buttonName} 
       </button>
 
       {/* Links */}
       <div className="flex flex-col items-center space-y-1 pt-2">
         <a href="/register" className="text-sm text-blue-600 hover:underline">
-          Register Account
+        {linkName}
         </a>
       </div>
     </form>
