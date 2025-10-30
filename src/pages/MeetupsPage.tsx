@@ -1,6 +1,6 @@
 export default function MeetupsPage() {
   return (
-    <main className="main text-white p-4">
+    <main className="main text-white p-4 flex flex-col">
       <h1 className="text-2xl font-bold text-center mb-6">Hitta Meetups</h1>
 
       <div className="mb-8">
