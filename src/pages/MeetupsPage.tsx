@@ -1,23 +1,42 @@
 export default function MeetupsPage() {
   return (
-    <main className="main text-white p-4 flex flex-col">
-      <h1 className="text-2xl font-bold text-center mb-6">Hitta Meetups</h1>
-
-      <div className="mb-8">
+    <main className="main text-white p-5 flex flex-col">
+      <header className="w-full flex flex-col items-center mb-8">
+        <h1 className="text-3xl font-bold mb-8 text-center pt-9 ">Hitta Meetups</h1>
+        
         <input
           type="text"
           placeholder="Sök efter meetups..."
-          className="w-full p-2 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+          className="w-11/12 sm:w-96 p-2 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:outline-none text-center mb-4"
         />
-      </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 w-11/12 sm:w-auto justify-center">
+          <input
+            type="date"
+            className="p-2 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-44"
+          />
+
+          <select className="p-2 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-44">
+            <option value="">Plats</option>
+            <option>Stockholm</option>
+            <option>Göteborg</option>
+            <option>Malmö</option>
+            <option>Uppsala</option>
+          </select>
+
+          <select className="p-2 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-purple-500 focus:outline-none w-full sm:w-44">
+            <option value="">Kategori</option>
+            <option>Tech</option>
+            <option>Matlagning</option>
+            <option>Kreativt</option>
+            <option>Hälsa</option>
+            <option>Gaming</option>
+          </select>
+        </div>
+      </header>
 
       <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3">
         <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          {/* <img
-            src="https://images.unsplash.com/photo-1601924928353-3e3a7e8e34f3?auto=format&fit=crop&w=800&q=60"
-            alt="Meetup"
-            className="h-48 w-full object-cover"
-          /> */}
           <div className="p-4">
             <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
             <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
@@ -28,11 +47,6 @@ export default function MeetupsPage() {
         </article>
 
         <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          {/* <img
-            src="https://images.unsplash.com/photo-1601924928353-3e3a7e8e34f3?auto=format&fit=crop&w=800&q=60"
-            alt="Meetup"
-            className="h-48 w-full object-cover"
-          /> */}
           <div className="p-4">
             <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
             <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
@@ -43,11 +57,6 @@ export default function MeetupsPage() {
         </article>
 
         <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          {/* <img
-            src="https://images.unsplash.com/photo-1601924928353-3e3a7e8e34f3?auto=format&fit=crop&w=800&q=60"
-            alt="Meetup"
-            className="h-48 w-full object-cover"
-          /> */}
           <div className="p-4">
             <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
             <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
@@ -57,7 +66,6 @@ export default function MeetupsPage() {
           </div>
         </article>
       </section>
-      
     </main>
   );
 }
