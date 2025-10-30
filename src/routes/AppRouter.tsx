@@ -4,6 +4,7 @@ import RegisterPage from '../pages/RegisterPage';
 import MeetupsPage from '../pages/MeetupsPage';
 import ProfilePage from '../pages/ProfilePage';
 import MeetupsInfo from '../pages/MeetupsInfo';
+import ReviewPage from '../pages/ReviewPage';
 
 export default function AppRouter() {
   return (
