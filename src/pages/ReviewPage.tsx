@@ -2,6 +2,7 @@ import Button from '../components/ui/Button';
 import Header from '../components/ui/Header';
 import { useState } from 'react';
 import StarRating from '../components/review/StarRating';
+import { postReview } from '../features/meetupApi';
 
 const ReviewPage = () => {
   const [rating, setRating] = useState(0);
@@ -16,12 +17,12 @@ const ReviewPage = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center px-10 pt-4">
       <Header title="Betygsätt & Recensera" />
-      <main className="w-full max-3xl">
+      <main className="w-full max-w-3xl">
         <h2 className="text-center text-xl font-semibold mb-6">Namnet på meetup-eventet!</h2>
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col w-full lg:flex-row justify-center gap-4 lg:gap-10 p-6  lg:pg-9"
+          className="flex flex-col w-full lg:flex-row justify-center gap-4 lg:gap-10 p-6  lg:p-9"
         >
           <div className="flex flex-col items-center gap-2 lg:gap-6 flex-1">
             <h3 className="text-lg font-medium">Hur många stjärnor ger du meetupet?</h3>
