@@ -1,24 +1,69 @@
+/* OBS lägg till detta på meetuppage:
+<Link to={`/meetups/${m.id}/review`} state={{ title: m.title }}>
+  Betygsätt & Recensera
+</Link> */
+
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Header from '../components/ui/Header';
-import { useState } from 'react';
 import StarRating from '../components/review/StarRating';
-import { postReview } from '../features/meetupApi';
+import { postReview, fetchMeetupById } from '../features/meetupApi';
+
+type LocationState = { title?: string };
 
 const ReviewPage = () => {
+  const { id: meetupId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = (location.state as LocationState) ?? {};
+
+  const [meetupTitle, setMeetupTitle] = useState<string>(state.title ?? '');
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  // Get title fallback, if route state is missing
+    useEffect(() => {
+    if (!meetupTitle && meetupId) {
+      (async () => {
+        try {
+          const m = await fetchMeetupById(meetupId);
+          setMeetupTitle(m.title);
+        } catch (e) {
+          console.warn('Kunde inte hämta meetup:', e);
+        }
+      })();
+    }
+  }, [meetupId, meetupTitle]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Hantera inskickning av betyg och recension här
+
     console.log('Betyg:', rating, 'Recension:', review);
+    if (!meetupId) return;
+    setIsLoading(true);
+    setError(null);
+    try {
+      await postReview(meetupId, rating, review);
+      navigate(`/meetups/${meetupId}`);
+    } catch (error: any) {
+      // måste använda 'any' här tills vi har en bättre felhanteringsstrategi
+      setError(error.message || 'Review submission failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center px-10 pt-4">
       <Header title="Betygsätt & Recensera" />
       <main className="w-full max-w-3xl">
-        <h2 className="text-center text-xl font-semibold mb-6">Namnet på meetup-eventet!</h2>
+        <h2 className="text-center text-xl font-semibold mb-6">
+          {meetupTitle || 'Meetup'}
+          </h2>
 
         <form
           onSubmit={handleSubmit}
@@ -36,12 +81,13 @@ const ReviewPage = () => {
               value={review}
               onChange={(e) => setReview(e.target.value)}
             />
+            {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button
               type="submit"
-              disabled={rating === 0}
+              disabled={rating === 0 || isLoading}
               className="w-full py-3 text-base lg:text-lg"
             >
-              Skicka in
+              {isLoading ? 'Skickar…' : 'Skicka in'}
             </Button>
           </div>
         </form>
@@ -49,4 +95,5 @@ const ReviewPage = () => {
     </div>
   );
 };
+
 export default ReviewPage;

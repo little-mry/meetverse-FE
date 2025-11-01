@@ -3,11 +3,12 @@ import starRegular from '../../assets/star-regular.svg';
 import starSolid from '../../assets/star-solid.svg';
 
 type starRatingProps = {
-  value: number; 
+  value: number;
   onChange: (value: number) => void;
-  max?: number; 
+  max?: number;
+  readOnly?: boolean;
 };
-const StarRating = ({ value, onChange, max = 5 }: starRatingProps) => {
+const StarRating = ({ value, onChange, max = 5, readOnly = false }: starRatingProps) => {
   const [starRating, setStarRating] = useState<number | null>(null);
   const showing = starRating ?? value;
 
@@ -28,6 +29,9 @@ const StarRating = ({ value, onChange, max = 5 }: starRatingProps) => {
             className="p-0 bg-transparent border-none cursor-pointer"
             onClick={() => onChange(index)}
             onMouseEnter={() => setStarRating(index)}
+            disabled={readOnly}
+            aria-checked={index === value}
+            role="radio"
           >
             <img
               src={active ? starSolid : starRegular}
