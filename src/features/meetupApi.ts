@@ -1,8 +1,4 @@
-export type ReviewData = {
-  meetupId: string;
-  rating: number;
-  text?: string;
-};
+import { api } from "./apiClient";
 
 export type ReviewResponse = {
   status: string;
@@ -14,20 +10,10 @@ export type ReviewResponse = {
   };
 };
 
-const API_URL = '/meetups';
 
-export const postReview = async ({ meetupId, rating, text }: ReviewData, token: string): Promise<ReviewResponse> => {
-  const response = await fetch(`${API_URL}/${meetupId}/reviews`, {
+export const postReview = async (meetupId: string, rating: number, text?: string): Promise<ReviewResponse> => {
+  return api<ReviewResponse>(`/meetups/${meetupId}/reviews`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({rating, text}),
+    body: JSON.stringify({ rating, text }),
   });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || 'Posting review failed');
-  }
-  return data as ReviewResponse;
 };
