@@ -3,7 +3,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import MeetupsPage from '../pages/MeetupsPage';
 import ProfilePage from '../pages/ProfilePage';
-import MeetupsInfo from '../pages/MeetupsInfo';
+import MeetupInfoPage from '../pages/MeetupInfoPage';
 import ReviewPage from '../pages/ReviewPage';
 
 export default function AppRouter() {
@@ -14,7 +14,7 @@ export default function AppRouter() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/meetups" element={<MeetupsPage />} />
-          <Route path="/meetupsinfo" element={<MeetupsInfo />} />
+          <Route path="/meetups/:id" element={<MeetupInfoPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/review" element={<ReviewPage />} />
         </Routes>
