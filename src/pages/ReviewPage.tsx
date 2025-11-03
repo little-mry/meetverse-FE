@@ -8,7 +8,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Header from '../components/ui/Header';
 import StarRating from '../components/review/StarRating';
-import { postReview, fetchMeetupById } from '../features/meetupApi';
+import { postReview, fetchMeetupById } from '../services/meetupApi';
 
 type LocationState = { title?: string };
 
@@ -24,9 +24,8 @@ const ReviewPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-
   // Get title fallback, if route state is missing
-    useEffect(() => {
+  useEffect(() => {
     if (!meetupTitle && meetupId) {
       (async () => {
         try {
@@ -61,9 +60,7 @@ const ReviewPage = () => {
     <div className="min-h-screen w-full flex flex-col items-center px-10 pt-4">
       <Header title="Betygsätt & Recensera" />
       <main className="w-full max-w-3xl">
-        <h2 className="text-center text-xl font-semibold mb-6">
-          {meetupTitle || 'Meetup'}
-          </h2>
+        <h2 className="text-center text-xl font-semibold mb-6">{meetupTitle || 'Meetup'}</h2>
 
         <form
           onSubmit={handleSubmit}
