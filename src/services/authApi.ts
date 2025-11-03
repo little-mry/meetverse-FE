@@ -15,7 +15,7 @@ export interface AuthResponse {
   user: string;
 }
 
-const API_URL = '/user';
+const API_URL = '/api/user';
 
 export const loginUser = async (credentials: LoginCredentials): Promise<AuthResponse> => {
   const response = await fetch(`${API_URL}/login`, {
