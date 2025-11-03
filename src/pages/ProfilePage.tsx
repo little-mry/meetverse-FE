@@ -1,10 +1,148 @@
-import Header from "../components/ui/Header";
+import Profile from '../components/Profile/Profile';
+import Header from '../components/ui/Header';
+import { api } from '../services/apiClient';
+import { useState, useEffect, useMemo } from 'react';
 
+interface UserProfile {
+  username: string;
+  email: string;
+  registration: string[];
+}
+
+interface Meetup {
+  id: string;
+  title: string;
+  date: string[];
+  description: string;
+}
 
 const ProfilePage = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [myMeetups, setMyMeetups] = useState<Meetup[]>([]);
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProfileAndMeetups = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const [userData, allMeetups] = await Promise.all([
+          api<UserProfile>('/user/me', { method: 'GET' }),
+          api<Meetup[]>('/meetups', { method: 'GET' }),
+        ]);
+
+        setUsername(userData.username);
+        setEmail(userData.email);
+
+        const registeredIds = new Set(userData.registration);
+
+        const userMeetups = allMeetups.filter((meetup) => registeredIds.has(meetup.id));
+
+        setMyMeetups(userMeetups);
+      } catch (err: any) {
+        setError(err.message || 'Kunde inte hämta profil eller meetups');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfileAndMeetups();
+  }, []);
+
+  const displayedMeetups = useMemo(() => {
+    const now = new Date();
+
+    return myMeetups.filter((meetup) => {
+      const meetupDate = new Date(meetup.date[0]);
+
+      if (activeTab === 'upcoming') {
+        return meetupDate >= now;
+      } else {
+        return meetupDate < now;
+      }
+    });
+  }, [myMeetups, activeTab]);
+
+  if (isLoading) {
+    return (
+      <div className=" flex flex-col items-center w-full ">
+        <Header title="Profile" />
+        <p className="mt-4">Laddar profil...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className=" flex flex-col items-center w-full ">
+        <Header title="Profile" />
+        <p className="mt-4 text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className=" flex flex-col w-full">
+    <div className=" flex flex-col items-center w-full ">
       <Header title="Profile" />
+
+      <div className="w-full max-w-4xl p-4">
+        <Profile email={email} username={username} />
+      </div>
+
+      <div className="w-full max-w-4xl p-4 mt-6">
+        <div className="flex border-b border-gray-700 mb-4">
+          <button
+            onClick={() => setActiveTab('upcoming')}
+            className={`py-2 px-4 font-semibold ${
+              activeTab === 'upcoming'
+                ? 'border-b-2 border-indigo-500 text-white'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+          >
+            Anmälda
+          </button>
+          <button
+            onClick={() => setActiveTab('past')}
+            className={`py-2 px-4 font-semibold ${
+              activeTab === 'past'
+                ? 'border-b-2 border-indigo-500 text-white'
+                : 'text-gray-400 hover:text-gray-200'
+            }`}
+          >
+            Tidigare
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {displayedMeetups.length > 0 ? (
+            displayedMeetups.map((meetup) => (
+              <div key={meetup.id} className="bg-gray-800 p-4 rounded-lg shadow-md">
+                <h3 className="text-xl font-bold">{meetup.title}</h3>
+                <p className="text-sm text-gray-400">
+                  {new Date(meetup.date[0]).toLocaleDateString('sv-SE', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })}
+                </p>
+                <p className="mt-2 text-gray-300">{meetup.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-400">
+              Du har inga {activeTab === 'upcoming' ? 'anmälda' : 'tidigare'} meetups.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
