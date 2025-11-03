@@ -23,6 +23,10 @@ export type Meetup = {
   reviews: [{ userId: string; rating: number; text?: string }];
 };
 
+export const fetchAllMeetups = async (): Promise<Meetup[]> => {
+  return api<Meetup[]>('/meetups', { method: 'GET' });
+};
+
 export const fetchMeetupById = async (id: string): Promise<Meetup> => {
   return api<Meetup>(`/meetups/${id}`, { method: 'GET' });
 };

@@ -1,9 +1,67 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import MeetupCard from '../components/meetup/MeetupCard';
+import type { Meetup } from '../services/meetupApi';
+import { fetchAllMeetups } from '../services/meetupApi';
+
 export default function MeetupsPage() {
+  const navigate = useNavigate();
+  const [meetups, setMeetups] = useState<Meetup[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadMeetups = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchAllMeetups();
+        setMeetups(data);
+        setError(null);
+      } catch (err) {
+        setError('Kunde inte hämta meetups');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMeetups();
+  }, []);
+
+  const formatDate = (dateArray: string[]): string => {
+    if (!dateArray || dateArray.length === 0) return 'Datum ej angivet';
+    return new Date(dateArray[0]).toLocaleDateString('sv-SE', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  const formatLocation = (location?: { city: string; address: string }): string => {
+    return location ? location.city : 'Plats ej angiven';
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        <p className="text-xl">Laddar meetups...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        <p className="text-xl text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <main className="main text-white p-5 flex flex-col">
       <header className="w-full flex flex-col items-center mb-8">
-        <h1 className="text-3xl font-bold mb-8 text-center pt-9 ">Hitta Meetups</h1>
-        
+        <h1 className="text-3xl font-bold mb-8 text-center pt-9">Hitta Meetups</h1>
+
         <input
           type="text"
           placeholder="Sök efter meetups..."
@@ -35,37 +93,24 @@ export default function MeetupsPage() {
         </div>
       </header>
 
-      <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3">
-        <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <div className="p-4">
-            <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
-            <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
-            <p className="text-sm text-gray-400 mt-2">Stockholm</p>
-            <p className="text-sm text-gray-400"> 12 nov 2025 • 18:00</p>
-            <p className="text-xs mt-3 text-purple-400 font-medium">Kategori: Tech</p>
-          </div>
-        </article>
-
-        <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <div className="p-4">
-            <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
-            <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
-            <p className="text-sm text-gray-400 mt-2">Stockholm</p>
-            <p className="text-sm text-gray-400"> 12 nov 2025 • 18:00</p>
-            <p className="text-xs mt-3 text-purple-400 font-medium">Kategori: Tech</p>
-          </div>
-        </article>
-
-        <article className="bg-gray-800 rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <div className="p-4">
-            <h2 className="text-lg font-semibold">Kodkväll & Pizza</h2>
-            <p className="text-gray-300 text-sm mt-1">En kväll med kod, pizza och gott sällskap!</p>
-            <p className="text-sm text-gray-400 mt-2">Stockholm</p>
-            <p className="text-sm text-gray-400"> 12 nov 2025 • 18:00</p>
-            <p className="text-xs mt-3 text-purple-400 font-medium">Kategori: Tech</p>
-          </div>
-        </article>
-      </section>
+      {meetups.length === 0 ? (
+        <p className="text-center text-gray-400 text-lg mt-8">Inga meetups tillgängliga just nu</p>
+      ) : (
+        <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3">
+          {meetups.map((meetup) => (
+            <MeetupCard
+              key={meetup.id}
+              title={meetup.title}
+              description={meetup.description || 'Ingen beskrivning'}
+              location={formatLocation(meetup.location)}
+              date={formatDate(meetup.date)}
+              time={meetup.time || ''}
+              category={meetup.category || 'Övrigt'}
+              onClick={() => navigate(`/meetups/${meetup.id}`)}
+            />
+          ))}
+        </section>
+      )}
     </main>
   );
 }
