@@ -31,6 +31,9 @@ export const fetchMeetupById = async (id: string): Promise<Meetup> => {
   return api<Meetup>(`/meetups/${id}`, { method: 'GET' });
 };
 
+
+
+
 export const postReview = async (
   meetupId: string,
   rating: number,
