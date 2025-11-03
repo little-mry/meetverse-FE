@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 
-import { registerUser } from '../features/auth/api/authApi';
+import { registerUser } from '../services/authApi';
 
 export default function RegisterForm({ buttonName }: { buttonName: string }) {
   const [username, setUsername] = useState('');

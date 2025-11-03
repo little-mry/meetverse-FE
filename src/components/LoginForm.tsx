@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { loginUser } from '../features/auth/api/authApi';
+import { loginUser } from '../services/authApi';
 
 export default function LoginForm({
   buttonName,
