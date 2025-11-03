@@ -1,5 +1,3 @@
-import React from 'react';
-
 type meetupCardProps = {
   title: string;
   description: string;
