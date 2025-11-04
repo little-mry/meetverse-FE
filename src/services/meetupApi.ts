@@ -31,8 +31,13 @@ export const fetchMeetupById = async (id: string): Promise<Meetup> => {
   return api<Meetup>(`/meetups/${id}`, { method: 'GET' });
 };
 
+export const registerToMeetup = async (id: string): Promise<{ ok: true }> => {
+  return api<{ ok: true }>(`/meetups/${id}/register`, { method: 'POST' });
+};
 
-
+export const unregisterFromMeetup = async (id: string): Promise<{ ok: true }> => {
+  return api<{ ok: true }>(`/meetups/${id}/register`, { method: 'DELETE' });
+};
 
 export const postReview = async (
   meetupId: string,
