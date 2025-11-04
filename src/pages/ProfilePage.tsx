@@ -80,7 +80,6 @@ const ProfilePage = () => {
       </div>
 
       <div className="w-full max-w-4xl p-4 mt-6">
-        {/* Flik-knappar */}
         <div className="flex border-b border-gray-700 mb-4">
           <button
             onClick={() => setActiveTab('upcoming')}
