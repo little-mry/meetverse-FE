@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '20' # Rekommenderar 20 (LTS) över 22
           cache: 'npm'
-      - run: npm install
+      - run: npm ci
       
       # --- VIKTIG ÄNDRING HÄR ---
       - name: Build React App
