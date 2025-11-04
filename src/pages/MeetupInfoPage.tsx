@@ -5,7 +5,7 @@ import MeetupCard from '../components/meetup/MeetupCard';
 import Button from '../components/ui/Button';
 import type { Meetup } from '../services/meetupApi';
 import { fetchMeetupById, registerToMeetup, unregisterFromMeetup } from '../services/meetupApi';
-import { getMe } from '../services/userApi';
+import { getUserProfile } from '../services/userApi';
 
 export default function MeetupInfoPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,10 +28,11 @@ export default function MeetupInfoPage() {
         setLoading(true);
         setError(null);
 
-        const [m, user] = await Promise.all([fetchMeetupById(id), getMe()]);
+        const [m, user] = await Promise.all([fetchMeetupById(id), getUserProfile()]);
         setMeetup(m);
 
-        const isRegistered = m.registrations.some((regId) => regId === user.id);
+        const isRegistered = m.registrations.some((regName) => regName === user.username);
+
         setUserRegistered(isRegistered);
       } catch (err) {
         console.error(err);
