@@ -4,15 +4,8 @@ import Header from '../components/ui/Header';
 import MeetupCard from '../components/meetup/MeetupCard';
 import Button from '../components/ui/Button';
 import type { Meetup } from '../services/meetupApi';
-import { fetchAllMeetups } from '../services/meetupApi';
-import { api } from '../services/apiClient';
-
-interface UserProfile {
-  id: string;
-  username: string;
-  email: string;
-  registration: string[];
-}
+import { fetchMeetupById, registerToMeetup, unregisterFromMeetup } from '../services/meetupApi';
+import { getMe } from '../services/userApi';
 
 export default function MeetupInfoPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,40 +14,32 @@ export default function MeetupInfoPage() {
   const [meetup, setMeetup] = useState<Meetup | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [userRegistered, setUserRegistered] = useState(false);
 
   useEffect(() => {
-    const loadMeetupAndUser = async () => {
+    if (!id) {
+      setError('Ogiltigt meetup-id');
+      setLoading(false);
+      return;
+    }
+
+    (async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const [allMeetups, userData] = await Promise.all([
-          fetchAllMeetups(),
-          api<UserProfile>('/user/me', { method: 'GET' }),
-        ]);
+        const [m, user] = await Promise.all([fetchMeetupById(id), getMe()]);
+        setMeetup(m);
 
-        const found = allMeetups.find((m) => m.id === id);
-
-        if (found) {
-          setMeetup(found);
-
-          const isRegistered = found.registrations.some((regId) => regId === userData.id);
-          setUserRegistered(isRegistered);
-          setError(null);
-        } else {
-          setError('Meetup hittades inte');
-        }
+        const isRegistered = m.registrations.some((regId) => regId === user.id);
+        setUserRegistered(isRegistered);
       } catch (err) {
-        setError('Kunde inte hämta meetup eller användardata');
         console.error(err);
+        setError('Kunde inte hämta meetup eller användardata');
       } finally {
         setLoading(false);
       }
-    };
-
-    loadMeetupAndUser();
+    })();
   }, [id]);
 
   if (loading) return <p className="text-white">Laddar...</p>;
@@ -73,21 +58,13 @@ export default function MeetupInfoPage() {
   const formatLocation = (location?: { city: string; address: string }) =>
     location ? location.city : 'Plats ej angiven';
 
-  const meetupDate = meetup.date && meetup.date.length > 0 ? new Date(meetup.date[0]) : new Date();
+  const meetupDate = meetup.date?.length ? new Date(meetup.date[0]) : new Date();
   const today = new Date();
-
-  let buttonText = '';
-  let buttonAction: (() => void) | undefined;
-  let buttonDisabled = false;
 
   const handleRegister = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`/api/meetups/${meetup.id}/register`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Kunde inte registrera');
+      if (!meetup) return;
+      await registerToMeetup(meetup.id);
       setUserRegistered(true);
       alert('Du är nu registrerad!');
     } catch (err) {
@@ -97,15 +74,12 @@ export default function MeetupInfoPage() {
   };
 
   const handleUnregister = async () => {
-    const confirm = window.confirm('Vill du avregistrera dig från detta meetup?');
-    if (!confirm) return;
+    if (!meetup) return;
+    const ok = window.confirm('Vill du avregistrera dig från detta meetup?');
+    if (!ok) return;
+
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`/api/meetups/${meetup.id}/register`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error('Kunde inte avregistrera');
+      await unregisterFromMeetup(meetup.id);
       setUserRegistered(false);
       alert('Du är nu avregistrerad!');
     } catch (err) {
@@ -113,6 +87,10 @@ export default function MeetupInfoPage() {
       alert('Kunde inte avregistrera dig');
     }
   };
+
+  let buttonText = '';
+  let buttonAction: (() => void) | undefined;
+  let buttonDisabled = false;
 
   if (today < meetupDate) {
     if (!userRegistered) {
@@ -125,7 +103,8 @@ export default function MeetupInfoPage() {
   } else {
     if (userRegistered) {
       buttonText = 'Betygsätt & Recensera';
-      buttonAction = () => navigate(`/review?meetupId=${meetup.id}`, {state: { title: meetup.title }});
+      buttonAction = () =>
+        navigate(`/review?meetupId=${meetup.id}`, { state: { title: meetup.title } });
     } else {
       buttonText = 'Registrering stängd';
       buttonDisabled = true;
@@ -145,10 +124,25 @@ export default function MeetupInfoPage() {
         category={meetup.category || 'Övrigt'}
       />
 
+      {meetup.reviews && meetup.reviews.length > 0 ? (
+        <section className="bg-gray-800 p-4 rounded-2xl">
+          <h2 className="text-lg font-semibold mb-3">Tidigare recensioner</h2>
+          <ul className="flex flex-col gap-3">
+            {meetup.reviews.map((review, index) => (
+              <li key={index} className="border-b border-gray-700 pb-2">
+                <p className="text-yellow-400">Betyg: {review.rating}/5</p>
+                {review.text && <p className="italic">"{review.text}"</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <p className="text-gray-400 italic">Inga recensioner ännu</p>
+      )}
+
       <Button onClick={buttonAction} disabled={buttonDisabled}>
         {buttonText}
       </Button>
     </main>
   );
 }
-
