@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import hamburgerIcon from '../../assets/bars-solid-full.svg';
 
 const HamburgerMenu = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); 
+    navigate('/'); 
+  };
 
   return (
     <div className="relative ml-auto">
@@ -14,6 +20,7 @@ const HamburgerMenu = () => {
         <img
           src={hamburgerIcon}
           className="w-8 h-8 lg:w-10 lg:h-10"
+          alt="Hamburger menu"
         />
       </button>
 
@@ -33,13 +40,12 @@ const HamburgerMenu = () => {
           >
             Meetups
           </Link>
-          <Link
-            to="/"
-            className="px-4 py-2 hover:bg-gray-700"
-            onClick={() => setOpen(false)}
+          <button
+            onClick={handleLogout}
+            className="text-left px-4 py-2 hover:bg-gray-700"
           >
             Logga ut
-          </Link>
+          </button>
         </div>
       )}
     </div>
