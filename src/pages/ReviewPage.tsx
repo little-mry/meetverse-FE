@@ -1,8 +1,3 @@
-/* OBS lägg till detta på meetuppage:
-<Link to={`/meetups/${m.id}/review`} state={{ title: m.title }}>
-  Betygsätt & Recensera
-</Link> */
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';

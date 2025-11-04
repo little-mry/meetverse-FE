@@ -16,7 +16,8 @@ export default function AppRouter() {
           <Route path="/meetups" element={<MeetupsPage />} />
           <Route path="/meetups/:id" element={<MeetupInfoPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/review" element={<ReviewPage />} />
+          {/* <Route path="/review" element={<ReviewPage />} /> */}
+          <Route path="/meetups/:id/review" element={<ReviewPage />} />
         </Routes>
       </BrowserRouter>
     </div>
