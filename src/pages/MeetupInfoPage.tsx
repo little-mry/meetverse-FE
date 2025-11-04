@@ -15,6 +15,7 @@ export default function MeetupInfoPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userRegistered, setUserRegistered] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ username: string } | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -30,8 +31,8 @@ export default function MeetupInfoPage() {
 
         const [m, user] = await Promise.all([fetchMeetupById(id), getUserProfile()]);
         setMeetup(m);
-
-        const isRegistered = m.registrations.some((regName) => regName === user.username);
+        setCurrentUser(user);
+        const isRegistered = m.registrations.some((regName) => regName === user.id);
 
         setUserRegistered(isRegistered);
       } catch (err) {
@@ -64,8 +65,14 @@ export default function MeetupInfoPage() {
 
   const handleRegister = async () => {
     try {
-      if (!meetup) return;
+      if (!meetup || !currentUser) return;
       await registerToMeetup(meetup.id);
+
+      setMeetup({
+        ...meetup,
+        registrations: [...meetup.registrations, currentUser.username],
+      });
+
       setUserRegistered(true);
       alert('Du är nu registrerad!');
     } catch (err) {
@@ -75,12 +82,18 @@ export default function MeetupInfoPage() {
   };
 
   const handleUnregister = async () => {
-    if (!meetup) return;
+    if (!meetup || !currentUser) return;
     const ok = window.confirm('Vill du avregistrera dig från detta meetup?');
     if (!ok) return;
 
     try {
       await unregisterFromMeetup(meetup.id);
+
+      setMeetup({
+        ...meetup,
+        registrations: meetup.registrations.filter((reg) => reg !== currentUser.username),
+      });
+
       setUserRegistered(false);
       alert('Du är nu avregistrerad!');
     } catch (err) {
@@ -104,7 +117,8 @@ export default function MeetupInfoPage() {
   } else {
     if (userRegistered) {
       buttonText = 'Betygsätt & Recensera';
-      buttonAction = () => navigate(`/meetups/${meetup.id}/review`, { state: { title: meetup.title } });
+      buttonAction = () =>
+        navigate(`/meetups/${meetup.id}/review`, { state: { title: meetup.title } });
     } else {
       buttonText = 'Registrering stängd';
       buttonDisabled = true;
