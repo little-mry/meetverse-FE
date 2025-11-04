@@ -7,6 +7,7 @@ import type { Meetup } from '../services/meetupApi';
 import { fetchMeetupById, registerToMeetup, unregisterFromMeetup } from '../services/meetupApi';
 import { getUserProfile } from '../services/userApi';
 import ModalMessage from '../components/ui/ModalMessage';
+import arrowIcon from '../assets/arrow.svg';
 
 export default function MeetupInfoPage() {
   const { id } = useParams<{ id: string }>();
@@ -124,8 +125,14 @@ export default function MeetupInfoPage() {
   }
 
   return (
-    <main className="main text-white p-5 flex flex-col gap-6">
+    <main className="main text-white p-5 flex flex-col gap-5">
       <Header title={meetup.title} />
+      <button
+        onClick={() => navigate('/meetups')}
+        className="flex items-center text-purple-400 w-fit"
+      >
+        <img src={arrowIcon} alt="Tillbaka" className="w-7 h-7" />
+      </button>
 
       <MeetupCard
         title={meetup.title}
@@ -137,7 +144,7 @@ export default function MeetupInfoPage() {
       />
 
       {meetup.reviews && meetup.reviews.length > 0 ? (
-                <section className="bg-gray-800 p-4 rounded-2xl">
+        <section className="bg-gray-800 p-4 rounded-2xl">
           <h2 className="text-lg font-semibold mb-3">Tidigare recensioner</h2>
           <ul className="flex flex-col gap-3">
             {meetup.reviews.map((review, index) => (
