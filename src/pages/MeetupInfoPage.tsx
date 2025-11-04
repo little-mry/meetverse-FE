@@ -104,8 +104,7 @@ export default function MeetupInfoPage() {
   } else {
     if (userRegistered) {
       buttonText = 'Betygsätt & Recensera';
-      buttonAction = () =>
-        navigate(`/review?meetupId=${meetup.id}`, { state: { title: meetup.title } });
+      buttonAction = () => navigate(`/meetups/${meetup.id}/review`, { state: { title: meetup.title } });
     } else {
       buttonText = 'Registrering stängd';
       buttonDisabled = true;
