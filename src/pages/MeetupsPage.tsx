@@ -60,6 +60,12 @@ export default function MeetupsPage() {
     });
   }, [meetups, search, city, category, selectedDate]);
 
+  const now = new Date();
+  const upcomingMeetups = filteredMeetups.filter((m) => new Date(m.date[0]) >= now);
+  const pastMeetups = filteredMeetups
+    .filter((m) => new Date(m.date[0]) < now)
+    .sort((a, b) => new Date(b.date[0]).getTime() - new Date(a.date[0]).getTime());
+
   const formatDate = (dateArray: string[]): string => {
     if (!dateArray?.length) return 'Datum ej angivet';
     return new Date(dateArray[0]).toLocaleDateString('sv-SE', {
@@ -128,23 +134,48 @@ export default function MeetupsPage() {
         </div>
       </header>
 
-      {filteredMeetups.length === 0 ? (
+      {upcomingMeetups.length > 0 && (
+        <>
+          <h2 className="text-xl font-semibold mb-3 text-center">Kommande meetups</h2>
+          <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3 mb-12">
+            {upcomingMeetups.map((meetup) => (
+              <MeetupCard
+                key={meetup.id}
+                title={meetup.title}
+                description={meetup.description || 'Ingen beskrivning'}
+                location={formatLocation(meetup.location)}
+                date={formatDate(meetup.date)}
+                time={meetup.time || ''}
+                category={meetup.category || 'Övrigt'}
+                onClick={() => navigate(`/meetups/${meetup.id}`)}
+              />
+            ))}
+          </section>
+        </>
+      )}
+
+      {pastMeetups.length > 0 && (
+        <>
+          <h2 className="text-xl font-semibold mb-3 text-center text-gray-400">Tidigare meetups</h2>
+          <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3 opacity-60 grayscale">
+            {pastMeetups.map((meetup) => (
+              <MeetupCard
+                key={meetup.id}
+                title={meetup.title}
+                description={meetup.description || 'Ingen beskrivning'}
+                location={formatLocation(meetup.location)}
+                date={formatDate(meetup.date)}
+                time={meetup.time || ''}
+                category={meetup.category || 'Övrigt'}
+                onClick={() => navigate(`/meetups/${meetup.id}`)}
+              />
+            ))}
+          </section>
+        </>
+      )}
+
+      {filteredMeetups.length === 0 && (
         <p className="text-center text-gray-400 text-lg mt-8">Inga meetups matchar din sökning</p>
-      ) : (
-        <section className="grid grid-cols-1 gap-9 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredMeetups.map((meetup) => (
-            <MeetupCard
-              key={meetup.id}
-              title={meetup.title}
-              description={meetup.description || 'Ingen beskrivning'}
-              location={formatLocation(meetup.location)}
-              date={formatDate(meetup.date)}
-              time={meetup.time || ''}
-              category={meetup.category || 'Övrigt'}
-              onClick={() => navigate(`/meetups/${meetup.id}`)}
-            />
-          ))}
-        </section>
       )}
     </main>
   );
