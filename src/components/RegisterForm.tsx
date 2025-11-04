@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-
+import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../services/authApi';
 
 export default function RegisterForm({ buttonName }: { buttonName: string }) {
@@ -9,6 +9,8 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +23,8 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
       console.log('Registration successful:', data);
 
       localStorage.setItem('token', data.token);
-      window.location.href = '/meetups';
+
+      navigate('/meetups');
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -30,7 +33,7 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
   };
 
   return (
-    <form className="flex flex-col space-y-4  text-amber-800" onSubmit={handleSubmit}>
+    <form className="flex flex-col space-y-4  " onSubmit={handleSubmit}>
       <div className="flex flex-col space-y-1">
         <label htmlFor="username" className="text-sm font-medium text-gray-700">
           Username
@@ -42,7 +45,7 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
           required
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
         />
       </div>
 
@@ -57,7 +60,7 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
         />
       </div>
 
@@ -72,7 +75,7 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:ring-indigo-500 text-gray-900"
         />
       </div>
 
@@ -87,9 +90,9 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
       </button>
 
       <div className="flex flex-col items-center space-y-1 pt-2">
-        <a href="/" className="text-sm text-blue-600 hover:underline">
+        <Link to="/" className="text-sm text-blue-600 hover:underline">
           Already have an account? Log in
-        </a>
+        </Link>
       </div>
     </form>
   );
