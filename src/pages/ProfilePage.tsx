@@ -1,28 +1,17 @@
 import Profile from '../components/Profile/Profile';
 import Header from '../components/ui/Header';
-import { api } from '../services/apiClient';
 import { useState, useEffect, useMemo } from 'react';
 
-interface UserProfile {
-  username: string;
-  email: string;
-  registration: string[];
-}
+import { getUserProfile } from '../services/userApi';
+import { fetchAllMeetups } from '../services/meetupApi';
 
-interface Meetup {
-  id: string;
-  title: string;
-  date: string[];
-  description: string;
-}
+import type { Meetup } from '../services/meetupApi';
 
 const ProfilePage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-
   const [myMeetups, setMyMeetups] = useState<Meetup[]>([]);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,18 +21,13 @@ const ProfilePage = () => {
         setIsLoading(true);
         setError(null);
 
-        const [userData, allMeetups] = await Promise.all([
-          api<UserProfile>('/user/me', { method: 'GET' }),
-          api<Meetup[]>('/meetups', { method: 'GET' }),
-        ]);
+        const [userData, allMeetups] = await Promise.all([getUserProfile(), fetchAllMeetups()]);
 
         setUsername(userData.username);
         setEmail(userData.email);
 
         const registeredIds = new Set(userData.registration);
-
         const userMeetups = allMeetups.filter((meetup) => registeredIds.has(meetup.id));
-
         setMyMeetups(userMeetups);
       } catch (err: any) {
         setError(err.message || 'Kunde inte hämta profil eller meetups');
