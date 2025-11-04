@@ -7,6 +7,7 @@ export type ReviewResponse = {
   review: {
     rating: number;
     text?: string;
+    username: string;
   };
 };
 
@@ -20,7 +21,7 @@ export type Meetup = {
   time?: string;
   capacity: number;
   registrations: string[];
-  reviews: [{ userId: string; rating: number; text?: string }];
+  reviews: [{ userId: string; username: string; rating: number; text?: string }];
 };
 
 export const fetchAllMeetups = async (): Promise<Meetup[]> => {

@@ -137,7 +137,18 @@ export default function MeetupInfoPage() {
       />
 
       {meetup.reviews && meetup.reviews.length > 0 ? (
-        <section>...</section>
+                <section className="bg-gray-800 p-4 rounded-2xl">
+          <h2 className="text-lg font-semibold mb-3">Tidigare recensioner</h2>
+          <ul className="flex flex-col gap-3">
+            {meetup.reviews.map((review, index) => (
+              <li key={index} className="border-b border-gray-700 pb-2">
+                <p className="text-yellow-400">Betyg: {review.rating}/5</p>
+                {review.text && <p className="italic">"{review.text}"</p>}
+                <p className="text-sm text-gray-400">- {review.username}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
       ) : (
         <p className="text-gray-400 italic">Inga recensioner ännu</p>
       )}
