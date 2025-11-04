@@ -2,11 +2,10 @@ import Profile from '../components/Profile/Profile';
 import Header from '../components/ui/Header';
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-
 import { getUserProfile } from '../services/userApi';
 import { fetchAllMeetups } from '../services/meetupApi';
-
 import type { Meetup } from '../services/meetupApi';
+import { getErrorMessage } from '../services/errorUtils';
 
 const ProfilePage = () => {
   const [username, setUsername] = useState('');
@@ -30,8 +29,8 @@ const ProfilePage = () => {
         const registeredIds = new Set(userData.registration);
         const userMeetups = allMeetups.filter((meetup) => registeredIds.has(meetup.id));
         setMyMeetups(userMeetups);
-      } catch (err: any) {
-        setError(err.message || 'Kunde inte hämta profil eller meetups');
+      } catch (err: unknown) {
+        setError(getErrorMessage(err, 'Failed to load profile data.'));
       } finally {
         setIsLoading(false);
       }
