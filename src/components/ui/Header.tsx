@@ -1,6 +1,6 @@
 import React from 'react';
 import headerImg from '../../assets/Frame_1.svg';
-import HamburgerMenu from '../ui/Menu.tsx'
+import HamburgerMenu from '../ui/Menu.tsx';
 
 type HeaderProps = React.HTMLAttributes<HTMLElement> & {
   title?: string;
@@ -8,18 +8,28 @@ type HeaderProps = React.HTMLAttributes<HTMLElement> & {
 
 const Header = ({ title }: HeaderProps) => {
   return (
-    <header className="bg-gray-800 w-full flex items-center justify-between px-4 py-2 rounded-md shadow-sm mb-8">
-      <div className="flex items-center gap-3">
+    <header className="bg-gray-800 w-full flex items-center justify-between px-4 py-2 rounded-md shadow-sm mb-8 gap-4">
+     
+      <div className="shrink-0">
         <img
           className="w-[clamp(6rem,8vw,8rem)]"
           src={headerImg}
           alt="Meetverse logo"
         />
-        <h1 className="text-2xl md:text-3xl lg:text-4xl text-white font-bold leading-tight">
+      </div>
+
+    
+      <div className="min-w-0 flex-1">
+       
+        <h1 className="text-[clamp(0.5rem,4vw,2.25rem)] text-white font-bold leading-tight text-center">
           {title}
         </h1>
       </div>
-      <HamburgerMenu />
+      
+      
+      <div className="flex-shrink-0">
+        <HamburgerMenu />
+      </div>
     </header>
   );
 };

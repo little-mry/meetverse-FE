@@ -19,7 +19,7 @@ const HamburgerMenu = () => {
       >
         <img
           src={hamburgerIcon}
-          className="w-8 h-8 lg:w-10 lg:h-10"
+          className="w-8 h-8 lg:w-10 lg:h-10 min-w-8"
           alt="Hamburger menu"
         />
       </button>
