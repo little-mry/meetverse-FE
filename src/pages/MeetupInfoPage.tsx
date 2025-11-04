@@ -6,11 +6,12 @@ import Button from '../components/ui/Button';
 import type { Meetup } from '../services/meetupApi';
 import { fetchMeetupById, registerToMeetup, unregisterFromMeetup } from '../services/meetupApi';
 import { getUserProfile } from '../services/userApi';
+import ModalMessage from '../components/ui/ModalMessage';
 
 export default function MeetupInfoPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [meetup, setMeetup] = useState<Meetup | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,18 +75,15 @@ export default function MeetupInfoPage() {
       });
 
       setUserRegistered(true);
-      alert('Du är nu registrerad!');
+      setModalMessage('Du är nu avregistrerad!');
     } catch (err) {
       console.error(err);
-      alert('Kunde inte registrera dig');
+      setModalMessage('Kunde inte avregistrera dig');
     }
   };
 
   const handleUnregister = async () => {
     if (!meetup || !currentUser) return;
-    const ok = window.confirm('Vill du avregistrera dig från detta meetup?');
-    if (!ok) return;
-
     try {
       await unregisterFromMeetup(meetup.id);
 
@@ -95,10 +93,10 @@ export default function MeetupInfoPage() {
       });
 
       setUserRegistered(false);
-      alert('Du är nu avregistrerad!');
+      setModalMessage('Du är nu avregistrerad!');
     } catch (err) {
       console.error(err);
-      alert('Kunde inte avregistrera dig');
+      setModalMessage('Kunde inte avregistrera dig');
     }
   };
 
@@ -139,17 +137,7 @@ export default function MeetupInfoPage() {
       />
 
       {meetup.reviews && meetup.reviews.length > 0 ? (
-        <section className="bg-gray-800 p-4 rounded-2xl">
-          <h2 className="text-lg font-semibold mb-3">Tidigare recensioner</h2>
-          <ul className="flex flex-col gap-3">
-            {meetup.reviews.map((review, index) => (
-              <li key={index} className="border-b border-gray-700 pb-2">
-                <p className="text-yellow-400">Betyg: {review.rating}/5</p>
-                {review.text && <p className="italic">"{review.text}"</p>}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <section>...</section>
       ) : (
         <p className="text-gray-400 italic">Inga recensioner ännu</p>
       )}
@@ -157,6 +145,9 @@ export default function MeetupInfoPage() {
       <Button onClick={buttonAction} disabled={buttonDisabled}>
         {buttonText}
       </Button>
+      {modalMessage && (
+        <ModalMessage message={modalMessage} onClose={() => setModalMessage(null)} />
+      )}
     </main>
   );
 }
