@@ -1,5 +1,5 @@
 import RegisterForm from '../components/RegisterForm';
-
+// test
 export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col items-center px-10 pt-0">
