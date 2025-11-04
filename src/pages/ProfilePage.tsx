@@ -72,7 +72,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className=" flex flex-col items-center w-full ">
+    <div className=" flex flex-col items-center w-full px-5 py-5 ">
       <Header title="Profile" />
 
       <div className="w-full max-w-4xl p-4">
