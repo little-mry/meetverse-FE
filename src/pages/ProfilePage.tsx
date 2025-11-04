@@ -1,6 +1,7 @@
 import Profile from '../components/Profile/Profile';
 import Header from '../components/ui/Header';
 import { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { getUserProfile } from '../services/userApi';
 import { fetchAllMeetups } from '../services/meetupApi';
@@ -72,7 +73,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className=" flex flex-col items-center w-full ">
+    <div className=" flex flex-col items-center w-full px-5 py-5 ">
       <Header title="Profile" />
 
       <div className="w-full max-w-4xl p-4">
@@ -106,19 +107,24 @@ const ProfilePage = () => {
         <div className="space-y-4">
           {displayedMeetups.length > 0 ? (
             displayedMeetups.map((meetup) => (
-              <div key={meetup.id} className="bg-gray-800 p-4 rounded-lg shadow-md">
-                <h3 className="text-xl font-bold">{meetup.title}</h3>
-                <p className="text-sm text-gray-400">
-                  {new Date(meetup.date[0]).toLocaleDateString('sv-SE', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                  })}
-                </p>
-                <p className="mt-2 text-gray-300">{meetup.description}</p>
-              </div>
+              <Link key={meetup.id} to={`/meetups/${meetup.id}`} className="block">
+                <div
+                  className="bg-gray-800 p-4 rounded-lg shadow-md 
+                             hover:bg-gray-700 transition-all duration-200 cursor-pointer"
+                >
+                  <h3 className="text-xl font-bold">{meetup.title}</h3>
+                  <p className="text-sm text-gray-400">
+                    {new Date(meetup.date[0]).toLocaleDateString('sv-SE', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    })}
+                  </p>
+                  <p className="mt-2 text-gray-300">{meetup.description}</p>
+                </div>
+              </Link>
             ))
           ) : (
             <p className="text-gray-400">
