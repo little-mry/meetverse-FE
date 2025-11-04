@@ -27,7 +27,7 @@ const Header = ({ title }: HeaderProps) => {
       </div>
       
       
-      <div className="flex-shrink-0">
+      <div className="shrink-0">
         <HamburgerMenu />
       </div>
     </header>

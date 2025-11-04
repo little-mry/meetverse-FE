@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from '../services/authApi';
-
+import { getErrorMessage } from '../services/errorUtils';
 export default function LoginForm({
   buttonName,
   linkName,
@@ -28,8 +28,8 @@ export default function LoginForm({
       localStorage.setItem('token', data.token);
 
       navigate('/profile');
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Login failed. Please try again.'));
     } finally {
       setIsLoading(false);
     }

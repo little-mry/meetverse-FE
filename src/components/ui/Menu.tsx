@@ -25,7 +25,7 @@ const HamburgerMenu = () => {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-35 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col transition-all duration-200 p-2 lg:w-50 border-solid border-gray-900 border-1">
+        <div className="absolute right-0 mt-2 w-35 bg-gray-800 text-white rounded-lg shadow-lg flex flex-col transition-all duration-200 p-2 lg:w-50 border-solid border-gray-900 border">
           <Link
             to="/profile"
             className="px-4 py-2 hover:bg-gray-700"

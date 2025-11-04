@@ -4,7 +4,7 @@ import Button from '../components/ui/Button';
 import Header from '../components/ui/Header';
 import StarRating from '../components/review/StarRating';
 import { postReview, fetchMeetupById } from '../services/meetupApi';
-
+import { getErrorMessage } from '../services/errorUtils';
 type LocationState = { title?: string };
 
 const ReviewPage = () => {
@@ -43,9 +43,8 @@ const ReviewPage = () => {
     try {
       await postReview(meetupId, rating, review);
       navigate(`/meetups/${meetupId}`);
-    } catch (error: any) {
-      // måste använda 'any' här tills vi har en bättre felhanteringsstrategi
-      setError(error.message || 'Review submission failed');
+    } catch (error: unknown) {
+      setError(getErrorMessage(error, 'Något gick fel vid inlämning av recensionen.'));
     } finally {
       setIsLoading(false);
     }

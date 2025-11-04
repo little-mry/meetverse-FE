@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../services/authApi';
-
+import { getErrorMessage } from '../services/errorUtils';
 export default function RegisterForm({ buttonName }: { buttonName: string }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -25,8 +25,8 @@ export default function RegisterForm({ buttonName }: { buttonName: string }) {
       localStorage.setItem('token', data.token);
 
       navigate('/meetups');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, 'Registration failed. Please try again.'));
     } finally {
       setIsLoading(false);
     }
