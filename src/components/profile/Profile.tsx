@@ -2,7 +2,7 @@ type Props = {
   username: string;
   email: string;
 };
-
+// p
 const Profile = ({ username, email }: Props) => {
   return (
     <div className="flex flex-col items-start ">
