@@ -147,6 +147,8 @@ export default function MeetupsPage() {
                 date={formatDate(meetup.date)}
                 time={meetup.time || ''}
                 category={meetup.category || 'Övrigt'}
+                capacity={meetup.capacity}
+                registrations={meetup.registrations.length}
                 onClick={() => navigate(`/meetups/${meetup.id}`)}
               />
             ))}
@@ -167,6 +169,8 @@ export default function MeetupsPage() {
                 date={formatDate(meetup.date)}
                 time={meetup.time || ''}
                 category={meetup.category || 'Övrigt'}
+                 capacity={meetup.capacity}
+                registrations={meetup.registrations.length}
                 onClick={() => navigate(`/meetups/${meetup.id}`)}
               />
             ))}

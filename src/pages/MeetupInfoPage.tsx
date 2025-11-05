@@ -140,6 +140,8 @@ export default function MeetupInfoPage() {
         location={formatLocation(meetup.location)}
         date={formatDate(meetup.date)}
         time={meetup.time || ''}
+        capacity={meetup.capacity}
+        registrations={meetup.registrations.length}
         category={meetup.category || 'Övrigt'}
       />
 
