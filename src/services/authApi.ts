@@ -1,21 +1,5 @@
 import { api } from './apiClient';
-
-export type LoginCredentials = {
-  username: string;
-  password: string;
-};
-
-export type RegisterCredentials = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-export interface AuthResponse {
-  message: string;
-  token: string;
-  user: string;
-}
+import type { AuthResponse, LoginCredentials, RegisterCredentials } from '../types/auth.types';
 
 export const loginUser = async (credentials: LoginCredentials): Promise<AuthResponse> => {
   const path = '/user/login';
