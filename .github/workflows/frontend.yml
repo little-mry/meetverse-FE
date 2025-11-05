@@ -1,9 +1,8 @@
 name: Frontend CI/CD Build & Deploy to S3
 
 on:
-  pull_request:
+  push:
     branches: [main]
-    types: [closed]
 
 jobs:
   build-deploy:
@@ -18,7 +17,7 @@ jobs:
           node-version: '20' # Rekommenderar 20 (LTS) över 22
           cache: 'npm'
       - run: npm ci
-      
+
       # --- VIKTIG ÄNDRING HÄR ---
       - name: Build React App
         run: npm run build
