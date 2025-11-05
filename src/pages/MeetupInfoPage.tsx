@@ -76,7 +76,7 @@ export default function MeetupInfoPage() {
       });
 
       setUserRegistered(true);
-      setModalMessage('Du är nu avregistrerad!');
+      setModalMessage('Du är nu registrerad!');
     } catch (err) {
       console.error(err);
       setModalMessage('Kunde inte avregistrera dig');
