@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Header from '../components/ui/Header';
+import Header from '../components/common/Header';
 import MeetupCard from '../components/meetup/MeetupCard';
-import Button from '../components/ui/Button';
-import type { Meetup } from '../services/meetupApi';
+import Button from '../components/common/Button';
+import type { Meetup } from '../types/meetup.types';
 import { fetchMeetupById, registerToMeetup, unregisterFromMeetup } from '../services/meetupApi';
 import { getUserProfile } from '../services/userApi';
-import ModalMessage from '../components/ui/ModalMessage';
+import ModalMessage from '../components/common/ModalMessage';
 import arrowIcon from '../assets/arrow.svg';
 
 export default function MeetupInfoPage() {

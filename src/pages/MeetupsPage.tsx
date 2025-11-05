@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MeetupCard from '../components/meetup/MeetupCard';
-import type { Meetup } from '../services/meetupApi';
+import type { Meetup } from '../types/meetup.types';
 import { fetchAllMeetups } from '../services/meetupApi';
-import Header from '../components/ui/Header';
+import Header from '../components/common/Header';
 import SelectFilter, { type Option } from '../components/meetup/SelectFilter';
 
 export default function MeetupsPage() {

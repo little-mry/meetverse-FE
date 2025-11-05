@@ -1,10 +1,10 @@
-import Profile from '../components/Profile/Profile';
-import Header from '../components/ui/Header';
+import Profile from '../components/profile/Profile';
+import Header from '../components/common/Header';
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getUserProfile } from '../services/userApi';
 import { fetchAllMeetups } from '../services/meetupApi';
-import type { Meetup } from '../services/meetupApi';
+import type { Meetup } from '../types/meetup.types';
 import { getErrorMessage } from '../services/errorUtils';
 
 const ProfilePage = () => {

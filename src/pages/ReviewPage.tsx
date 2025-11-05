@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import Button from '../components/ui/Button';
-import Header from '../components/ui/Header';
+import Button from '../components/common/Button';
+import Header from '../components/common/Header';
 import StarRating from '../components/review/StarRating';
 import { postReview, fetchMeetupById } from '../services/meetupApi';
 import { getErrorMessage } from '../services/errorUtils';
@@ -19,7 +19,6 @@ const ReviewPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Get title fallback, if route state is missing
   useEffect(() => {
     if (!meetupTitle && meetupId) {
       (async () => {
