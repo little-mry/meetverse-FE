@@ -5,6 +5,8 @@ type meetupCardProps = {
   date: string;
   time: string;
   category: string;
+  capacity: number;
+  registrations: number;
   onClick?: () => void;
 };
 
@@ -15,6 +17,8 @@ const MeetupCard = ({
   date,
   time,
   category,
+  capacity,
+  registrations,
   onClick,
 }: meetupCardProps) => {
   return (
@@ -29,6 +33,7 @@ const MeetupCard = ({
         <p className="text-sm text-gray-400">
           {date} • {time}
         </p>
+       <p className="text-sm text-gray-400"> Anmälda: {registrations}/{capacity} </p>
         <p className="text-xs mt-3 text-purple-400 font-medium">Kategori: {category}</p>
       </div>
     </article>
