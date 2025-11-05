@@ -79,7 +79,7 @@ export default function MeetupInfoPage() {
       setModalMessage('Du är nu registrerad!');
     } catch (err) {
       console.error(err);
-      setModalMessage('Kunde inte avregistrera dig');
+      setModalMessage('Kunde inte registrera dig');
     }
   };
 
