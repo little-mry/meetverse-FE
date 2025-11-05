@@ -79,7 +79,7 @@ export default function MeetupInfoPage() {
       setModalMessage('Du är nu registrerad!');
     } catch (err) {
       console.error(err);
-      setModalMessage('Kunde inte registrera dig');
+      setModalMessage('Eventet är tyvärr fullt, men kolla gärna in andra meetups!');
     }
   };
 
