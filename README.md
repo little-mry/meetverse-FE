@@ -1,5 +1,9 @@
-
 # Meetverse - Frontend
+[Hemsida](http://pink-meetverse.s3-website.eu-north-1.amazonaws.com/)
+
+[Figma](https://www.figma.com/design/CO5upytarmm8zrLWPahNKC/MeetVerse-FE---BE?node-id=0-1&t=58dQvWLBBqm3Ba13-1)
+
+[Backend](https://github.com/little-mry/meetverse-BE)
 
 Detta är kodbasen för Meetverse-webbplatsen, där användare kan hitta och anmäla sig till meetups och evenemang.
 
@@ -40,3 +44,4 @@ Applikationen är byggd i React (Vite) och TypeScript. Den använder Tailwind CS
 - Betygsätt: Lämna betyg och omdöme på evenemang du varit på.
 
 ## Grupprojekt med medlemmarna  Ludwig, Maria, Vendela, Alice
+
