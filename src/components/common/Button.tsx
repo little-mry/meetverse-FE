@@ -14,23 +14,3 @@ export default function Button({
     </button>
   );
 }
-
-/* Exempelanvändning: 
-Enkel:
-<Button type="submit">Skicka in</Button>
-
-Med props:
-<Button
-  type="submit"
-  onClick={() => console.log("Skickar…")}
-  disabled
-  title="Skicka in din recension"
->
-  Skicka in
-</Button>
-
-Med anpassad klass:
-<Button className="bg-green-500 hover:bg-green-600">
-  Skicka in
-</Button>
-*/

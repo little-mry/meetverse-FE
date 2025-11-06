@@ -27,7 +27,3 @@ const Header = ({ title }: HeaderProps) => {
 };
 
 export default Header;
-
-/* Exempelanvänding:
-   <Header title='Betygsätt & Recensera' />
-*/

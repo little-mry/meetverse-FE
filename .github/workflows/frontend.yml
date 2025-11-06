@@ -15,16 +15,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20' # Rekommenderar 20 (LTS) över 22
+          node-version: '20' 
           cache: 'npm'
       - run: npm ci
       
-      # --- VIKTIG ÄNDRING HÄR ---
       - name: Build React App
         run: npm run build
         env:
           VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
-      # ---------------------------
 
       - name: Deploy to AWS S3
         uses: jakejarvis/s3-sync-action@v0.5.1
